@@ -33,9 +33,14 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::get('users/{id}', 'UserController@show')->middleware('isAdminOrSelf');
 });
 
-Route::group(['prefix' => 'generales'/*, 'middleware' => 'auth'*/], function(){
+Route::group(['prefix' => 'generales', 'middleware' => 'auth'], function(){
+    Route::apiResource('grupos', 'GruposController')->except('store');
+    Route::apiResource('unidades', 'UnidadesController')->except('store');
+    Route::apiResource('productos', 'ProductosController')->except('store');
+});
 
-    Route::apiResource('grupos', 'GruposController');
-    Route::apiResource('unidades', 'UnidadesController');
-    Route::apiResource('productos', 'ProductosController');
+Route::group(['prefix' => 'generales', 'middleware' => ['auth','isAdmin']], function(){
+    Route::post('grupos', 'GruposController@store');
+    Route::post('unidades', 'UnidadesController@store');
+    Route::post('productos', 'ProductosController@store');
 });
