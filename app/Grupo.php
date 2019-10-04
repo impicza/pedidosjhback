@@ -15,8 +15,4 @@ class Grupo extends Model
     	return $this->hasMany('App\Producto');
     }
 
-    public function getDateFormat()
-    {
-        return 'Y-d-m H:i:s.v';
-    }
 }

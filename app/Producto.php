@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Producto extends Model
 {
@@ -20,8 +21,11 @@ class Producto extends Model
     	return $this->hasMany('App\PivotPedidoProducto');
     }
 
-    public function getDateFormat()
-    {
-        return 'Y-d-m H:i:s.v';
+    public static function todosConGrupos(){
+    return DB::table('productos')
+            ->select('productos.id As id','productos.nombre As nombre','grupos.nombre as grupo')
+            ->join('grupos', 'grupos.id', '=', 'productos.grupo_id')
+            ->get();
     }
+
 }

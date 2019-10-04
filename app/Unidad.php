@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Unidad extends Model
 {
-    protected $table = 'grupos';
+    protected $table = 'unidades';
 
     protected $fillable = ['nombre'];
 
@@ -15,8 +15,4 @@ class Unidad extends Model
     	return $this->hasMany('App\PivotPedidoProducto');
     }
 
-    public function getDateFormat()
-    {
-        return 'Y-d-m H:i:s.v';
-    }
 }

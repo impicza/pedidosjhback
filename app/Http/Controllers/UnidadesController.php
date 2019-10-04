@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Unidad;
 
 class UnidadesController extends Controller
 {
@@ -13,7 +14,8 @@ class UnidadesController extends Controller
      */
     public function index()
     {
-        //
+        $index= Unidad::all();
+        return $index;
     }
 
     /**
@@ -34,7 +36,10 @@ class UnidadesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $nuevoItem = new Unidad($request->all());
+        $nuevoItem->save();
+
+        return 'done';
     }
 
     /**

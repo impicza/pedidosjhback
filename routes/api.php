@@ -33,3 +33,9 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::get('users/{id}', 'UserController@show')->middleware('isAdminOrSelf');
 });
 
+Route::group(['prefix' => 'generales'/*, 'middleware' => 'auth'*/], function(){
+
+    Route::apiResource('grupos', 'GruposController');
+    Route::apiResource('unidades', 'UnidadesController');
+    Route::apiResource('productos', 'ProductosController');
+});

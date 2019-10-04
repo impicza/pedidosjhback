@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Grupo;
 
 class GruposController extends Controller
 {
@@ -13,7 +14,8 @@ class GruposController extends Controller
      */
     public function index()
     {
-        //
+        $index= Grupo::all();
+        return $index;
     }
 
     /**
@@ -34,7 +36,10 @@ class GruposController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $nuevoItem = new Grupo($request->all());
+        $nuevoItem->save();
+
+        return 'done';
     }
 
     /**

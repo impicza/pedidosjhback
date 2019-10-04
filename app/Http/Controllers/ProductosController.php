@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Producto;
 
 class ProductosController extends Controller
 {
@@ -13,7 +14,8 @@ class ProductosController extends Controller
      */
     public function index()
     {
-        //
+        $index= Producto::todosConGrupos();
+        return $index;
     }
 
     /**
@@ -34,7 +36,10 @@ class ProductosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $nuevoItem = new Producto($request->all());
+        $nuevoItem->save();
+
+        return 'done';
     }
 
     /**
