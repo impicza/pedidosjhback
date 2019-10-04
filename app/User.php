@@ -53,9 +53,4 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany('App\Pedido');
     }
 
-    public function getDateFormat()
-    {
-        return 'Y-d-m H:i:s.v';
-    }
-
 }

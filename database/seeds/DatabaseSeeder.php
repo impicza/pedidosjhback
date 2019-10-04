@@ -13,6 +13,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+    	User::create([
+            'name' => 'Admin',
+            'email' => 'admin@test.com',
+            'password' => Hash::make('admin'),
+            'role' => 2
+        ]);
+
+        User::create([
+            'name' => 'user',
+            'email' => 'user@test.com',
+            'password' => Hash::make('user'),
+            'role' => 1
+        ]);
+
         $grupos = ['Cerdo','Res'];
         foreach ($grupos as $item) {
             App\Grupo::create([
