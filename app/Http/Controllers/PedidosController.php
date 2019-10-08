@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Pedido;
 use App\PivotPedidoProducto;
+use App\User;
 use PDF;
+use Carbon\Carbon;
 
 class PedidosController extends Controller
 {
@@ -29,20 +31,32 @@ class PedidosController extends Controller
 
     public function store(Request $request)
     {
-        if ( count($request->productos) > 0){
-            $nuevoItem = new Pedido($request->all());
-            $nuevoItem->estado = 1;
-            $nuevoItem->save();
 
-            foreach ($request->productos as $producto) {
-                $prod = new PivotPedidoProducto($producto);
-                $prod->pedido_id = $nuevoItem->id;
-                $prod->save();
+        $user = User::find($request->user_id);
+        $dias_despacho = explode(',', $user->dias_despacho);
+
+        $dayOfTheWeek = Carbon::now()->dayOfWeek;
+
+        $validate = array_search($dayOfTheWeek, $dias_despacho);
+
+        if ($validate == false) {
+            if ( count($request->productos) > 0){
+                $nuevoItem = new Pedido($request->all());
+                $nuevoItem->estado = 1;
+                $nuevoItem->save();
+
+                foreach ($request->productos as $producto) {
+                    $prod = new PivotPedidoProducto($producto);
+                    $prod->pedido_id = $nuevoItem->id;
+                    $prod->save();
+                }
+
+                return 'done';
+            } else {
+                return 'Error: Agregue al menos un producto';
             }
-
-            return 'done';
         } else {
-            return 'Error: Agregue al menos un producto';
+            return 'Error: No esta autorizado para generar un pedido el dia de hoy.';
         }
     }
 
@@ -79,10 +93,13 @@ class PedidosController extends Controller
 
     public function imprimirPedido($id){
 
+
         $productosRes = PivotPedidoProducto::todosPorGrupo($id,2);
         $productosCerdo = PivotPedidoProducto::todosPorGrupo($id,1);
 
         $pedido = Pedido::find($id);
+        $pedido->estado = 0;
+        $pedido->save();
 
         $usuario = $pedido->User;
 
