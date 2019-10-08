@@ -3,12 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Pedido extends Model
 {
     protected $table = 'pedidos';
 
-    protected $fillable = ['user_id'];
+    protected $fillable = ['user_id','estado'];
 
     public function User()
     {
@@ -18,5 +19,17 @@ class Pedido extends Model
     public function getDateFormat()
     {
         return 'Y-d-m H:i:s.v';
+    }
+
+    public function getDates()
+    {
+        return [];
+    }
+
+    public static function todosConCliente(){
+    return DB::table('pedidos')
+            ->select('pedidos.id as id', 'pedidos.created_at as fecha_creacion','pedidos.estado as estado', 'users.name as cliente')
+            ->join('users', 'users.id', '=', 'pedidos.user_id')
+            ->get();
     }
 }

@@ -44,3 +44,11 @@ Route::group(['prefix' => 'generales', 'middleware' => ['auth','isAdmin']], func
     Route::post('unidades', 'UnidadesController@store');
     Route::post('productos', 'ProductosController@store');
 });
+
+Route::group(['prefix' => 'pedidos', 'middleware' => 'auth'], function(){
+    Route::apiResource('items', 'PedidosController');
+    Route::get('listadoporcliente/{id}', 'PedidosController@listadoPorCliente');
+    Route::get('listadocompleto', 'PedidosController@listadoCompleto');
+    Route::get('imprimirpedido/{id}', 'PedidosController@imprimirPedido');
+});
+

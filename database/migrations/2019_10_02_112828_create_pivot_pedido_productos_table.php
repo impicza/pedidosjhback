@@ -16,6 +16,8 @@ class CreatePivotPedidoProductosTable extends Migration
         Schema::create('pivot_pedido_productos', function (Blueprint $table) {
             $table->bigIncrements('id');
 
+            $table->bigInteger('cantidad');
+
             $table->unsignedBigInteger('pedido_id');
             $table->foreign('pedido_id')->references('id')->on('pedidos');
 
