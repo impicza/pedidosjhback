@@ -18,7 +18,7 @@ class PedidosController extends Controller
 
     public function listadoPorCliente($id)
     {
-        $list = Pedido::where('user_id', $id)->get();
+        $list = Pedido::where('user_id', $id)->orderby('created_at', 'desc')->get();
         return $list;
     }
 
@@ -39,24 +39,30 @@ class PedidosController extends Controller
 
         $validate = array_search($dayOfTheWeek, $dias_despacho);
 
-        if ($validate == false) {
-            if ( count($request->productos) > 0){
-                $nuevoItem = new Pedido($request->all());
-                $nuevoItem->estado = 1;
-                $nuevoItem->save();
+        $pedidosAbiertos = Pedido::where('estado', 1)->get();
 
-                foreach ($request->productos as $producto) {
-                    $prod = new PivotPedidoProducto($producto);
-                    $prod->pedido_id = $nuevoItem->id;
-                    $prod->save();
+        if (count($pedidosAbiertos) < 1) {
+            if ($validate == false) {
+                if ( count($request->productos) > 0){
+                    $nuevoItem = new Pedido($request->all());
+                    $nuevoItem->estado = 1;
+                    $nuevoItem->save();
+
+                    foreach ($request->productos as $producto) {
+                        $prod = new PivotPedidoProducto($producto);
+                        $prod->pedido_id = $nuevoItem->id;
+                        $prod->save();
+                    }
+
+                    return 'done';
+                } else {
+                    return 'Error: Agregue al menos un producto';
                 }
-
-                return 'done';
             } else {
-                return 'Error: Agregue al menos un producto';
+                return 'Error: No esta autorizado para generar un pedido el dia de hoy.';
             }
         } else {
-            return 'Error: No esta autorizado para generar un pedido el dia de hoy.';
+           return 'Error: Ya tiene un pedido activo.'; 
         }
     }
 

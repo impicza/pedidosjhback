@@ -84,9 +84,10 @@
 		<table class="table table-even table-font">
 			<thead>
 				<tr>
-					<th style="width:50%;"><span class="title-table">Producto</span></th>
+					<th style="width:25%;"><span class="title-table">Producto</span></th>
 					<th style="width:25%;"><span class="title-table">Unidad</span></th>
 					<th style="width:25%;"><span class="title-table">Cantidad</span></th>
+					<th style="width:25%;"><span class="title-table">Peso Despachado</span></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -95,6 +96,7 @@
 						<td>{{ $element->producto_nombre }}</td>
 						<td>{{ $element->unidad_nombre	}}</td>
 						<td>{{ $element->cantidad	}}</td>
+						<td></td>
 					</tr>
 				@endforeach
 
@@ -107,9 +109,10 @@
 		<table class="table table-even table-font">
 			<thead>
 				<tr>
-					<th style="width:50%;"><span class="title-table">Producto</span></th>
+					<th style="width:25%;"><span class="title-table">Producto</span></th>
 					<th style="width:25%;"><span class="title-table">Unidad</span></th>
 					<th style="width:25%;"><span class="title-table">Cantidad</span></th>
+					<th style="width:25%;"><span class="title-table">Peso Despachado</span></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -118,6 +121,7 @@
 						<td>{{ $producto->producto_nombre }}</td>
 						<td>{{ $producto->unidad_nombre	}}</td>
 						<td>{{ $producto->cantidad	}}</td>
+						<td></td>
 					</tr>
 				@endforeach
 
