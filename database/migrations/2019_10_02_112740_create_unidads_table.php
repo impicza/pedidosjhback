@@ -16,6 +16,8 @@ class CreateUnidadsTable extends Migration
         Schema::create('unidades', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nombre');
+            $table->boolean('activo');
+            // 0 para inactivo 1 para activo
             $table->timestamps();
         });
     }

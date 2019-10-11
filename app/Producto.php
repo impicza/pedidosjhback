@@ -9,7 +9,7 @@ class Producto extends Model
 {
     protected $table = 'productos';
 
-    protected $fillable = ['nombre','grupo_id'];
+    protected $fillable = ['nombre','grupo_id','activo'];
 
     public function Grupo()
     {
@@ -21,10 +21,13 @@ class Producto extends Model
     	return $this->hasMany('App\PivotPedidoProducto');
     }
 
-    public static function todosConGrupos(){
+    public static function todosConGrupos($activo){
     return DB::table('productos')
-            ->select('productos.id As id','productos.nombre As nombre','grupos.nombre as grupo')
+            ->select('productos.id As id','productos.nombre As nombre','grupos.nombre as grupo', 'productos.activo as activo')
             ->join('grupos', 'grupos.id', '=', 'productos.grupo_id')
+            ->when($activo, function ($query, $activo) {
+                return $query->where('productos.activo', $activo);
+            })
             ->get();
     }
 

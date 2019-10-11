@@ -26,4 +26,15 @@ class UserController extends Controller
                 'user' => $user->toArray()
             ], 200);
     }
+
+    public function estado($id, $cambio)
+    {
+         $model = User::find($id);
+         
+         $modificacion = ($cambio == 'activar') ? $model->activo = 1 : $model->activo =0;
+         $validate = $model->save();
+         $return = $validate ? 'true' : 'false';
+
+         return $return;
+    }
 }

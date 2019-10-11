@@ -14,26 +14,29 @@ class ProductosController extends Controller
      */
     public function index()
     {
-        $index= Producto::todosConGrupos();
+        $activo = null;
+        $index= Producto::todosConGrupos($activo);
         return $index;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function indexActivos()
     {
-        //
+        $activo = 1;
+        $index= Producto::todosConGrupos($activo);
+        return $index;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    public function estado($id, $cambio)
+    {
+         $model = Producto::find($id);
+         
+         $modificacion = ($cambio == 'activar') ? $model->activo = 1 : $model->activo =0;
+         $validate = $model->save();
+         $return = $validate ? 'true' : 'false';
+
+         return $return;
+    }
+
     public function store(Request $request)
     {
         $nuevoItem = new Producto($request->all());

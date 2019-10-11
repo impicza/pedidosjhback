@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@pedidosjh.com',
             'password' => Hash::make('admin'),
             'dias_despacho' => '',
-            'role' => 2
+            'role' => 'admin',
+            'activo' => 1
         ]);
 
         User::create([
@@ -26,20 +27,23 @@ class DatabaseSeeder extends Seeder
             'email' => 'user@pedidosjh.com',
             'password' => Hash::make('user'),
             'dias_despacho' => '1,3,5',
-            'role' => 1
+            'role' => 'user',
+            'activo' => 1
         ]);
 
         $grupos = ['Cerdo','Res'];
         foreach ($grupos as $item) {
             App\Grupo::create([
-                'nombre' => $item
+                'nombre' => $item,
+                'activo' => 1
             ]);
         }
 
         $unidades = ['Unidades','Kilos'];
         foreach ($unidades as $item) {
             App\Unidad::create([
-                'nombre' => $item
+                'nombre' => $item,
+                'activo' => 1
             ]);
         }
 
@@ -111,7 +115,8 @@ class DatabaseSeeder extends Seeder
         foreach ($productos as $item) {
             App\Producto::create([
                 'nombre' => $item[0],
-                'grupo_id' => $item[1]
+                'grupo_id' => $item[1],
+                'activo' => 1
             ]);
         }
 

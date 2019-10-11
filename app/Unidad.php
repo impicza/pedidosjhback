@@ -8,7 +8,7 @@ class Unidad extends Model
 {
     protected $table = 'unidades';
 
-    protected $fillable = ['nombre'];
+    protected $fillable = ['nombre','activo'];
 
     public function pivotPedidoProducto()
     {

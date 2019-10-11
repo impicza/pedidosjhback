@@ -18,22 +18,23 @@ class GruposController extends Controller
         return $index;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function indexActivos()
     {
-        //
+        $index= Grupo::where('activo', 1);
+        return $index;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    public function estado($id, $cambio)
+    {
+         $model = Grupo::find($id);
+         
+         $modificacion = ($cambio == 'activar') ? $model->activo = 1 : $model->activo =0;
+         $validate = $model->save();
+         $return = $validate ? 'true' : 'false';
+
+         return $return;
+    }
+
     public function store(Request $request)
     {
         $nuevoItem = new Grupo($request->all());

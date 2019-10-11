@@ -8,6 +8,7 @@ use App\PivotPedidoProducto;
 use App\User;
 use PDF;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class PedidosController extends Controller
 {
@@ -28,6 +29,14 @@ class PedidosController extends Controller
         return $list;
     }
 
+    public function reactivar($id)
+    {
+        $pedido = Pedido::find($id);
+        $pedido->estado = 1;
+        $pedido->save();
+
+        return 'done';
+    }
 
     public function store(Request $request)
     {
@@ -99,7 +108,6 @@ class PedidosController extends Controller
 
     public function imprimirPedido($id){
 
-
         $productosRes = PivotPedidoProducto::todosPorGrupo($id,2);
         $productosCerdo = PivotPedidoProducto::todosPorGrupo($id,1);
 
@@ -115,6 +123,22 @@ class PedidosController extends Controller
         // return view('certificados.pdf');
 
         return $pdf->stream();
+    }
+
+    public function imprimirPedidoCliente($id){
+
+        $user = Auth::user();
+        $pedido = Pedido::find($id);
+        if ($user->id == $pedido->user_id ){
+            $productosRes = PivotPedidoProducto::todosPorGrupo($id,2);
+            $productosCerdo = PivotPedidoProducto::todosPorGrupo($id,1);
+            $usuario = $pedido->User;
+            $data = ['productosRes' => $productosRes,'productosCerdo' => $productosCerdo, 'pedido' => $pedido, 'usuario' => $usuario];
+            $pdf = PDF::loadView('pdf.pedido', $data);
+            return $pdf->stream();
+        } else {
+            return 'Error: no autorizado';
+        }
     }
 
 }

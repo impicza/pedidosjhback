@@ -8,7 +8,7 @@ class Grupo extends Model
 {
     protected $table = 'grupos';
 
-    protected $fillable = ['nombre'];
+    protected $fillable = ['nombre','activo'];
 
     public function producto()
     {
