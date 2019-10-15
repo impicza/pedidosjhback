@@ -40,6 +40,7 @@ class ProductosController extends Controller
     public function store(Request $request)
     {
         $nuevoItem = new Producto($request->all());
+        $nuevoItem->activo = 1;
         $nuevoItem->save();
 
         return 'done';

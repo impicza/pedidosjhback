@@ -27,13 +27,15 @@ Route::prefix('auth')->group(function () {
     });
 });
 
-Route::get('/users/estado/{id}/{cambio}', 'ProductosController@estado');
-Route::post('/users/changepassword', 'AuthController@changePassword');
+
 
 Route::group(['middleware' => 'auth:api'], function(){
     // Users
     Route::get('users', 'UserController@index')->middleware('isAdmin');
     Route::get('users/{id}', 'UserController@show')->middleware('isAdminOrSelf');
+    Route::get('/users/estado/{id}/{cambio}', 'UserController@estado')->middleware('isAdmin');
+    Route::get('/users/reinitpassword/{id}', 'UserController@reiniciarPassword')->middleware('isAdmin');
+    Route::post('/users/changepassword', 'AuthController@changePassword')->middleware('isAdminOrSelf');
 });
 
 Route::group(['prefix' => 'generales', 'middleware' => 'auth'], function(){

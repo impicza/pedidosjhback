@@ -38,6 +38,7 @@ class UnidadesController extends Controller
     public function store(Request $request)
     {
         $nuevoItem = new Unidad($request->all());
+        $nuevoItem->activo = 1;
         $nuevoItem->save();
 
         return 'done';
