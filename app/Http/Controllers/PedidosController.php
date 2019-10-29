@@ -19,7 +19,7 @@ class PedidosController extends Controller
 
     public function listadoPorCliente($id)
     {
-        $list = Pedido::where('user_id', $id)->orderby('created_at', 'desc')->get();
+        $list = Pedido::where('user_id', $id)->orderby('id', 'desc')->get();
         return $list;
     }
 
@@ -48,7 +48,7 @@ class PedidosController extends Controller
 
         $validate = array_search($dayOfTheWeek, $dias_despacho);
 
-        $pedidosAbiertos = Pedido::where('estado', 1)->get();
+        $pedidosAbiertos = Pedido::where('estado', 1)->where('user_id', Auth::user()->id)->get();
 
         if (count($pedidosAbiertos) < 1) {
             if ($validate == false) {
@@ -81,6 +81,7 @@ class PedidosController extends Controller
         
         $model->productosRes = PivotPedidoProducto::todosPorGrupo($id,2);
         $model->productosCerdo = PivotPedidoProducto::todosPorGrupo($id,1);
+        $model->productosOtros = PivotPedidoProducto::todosPorGrupo($id,3);
 
         return $model;
     }
@@ -91,6 +92,10 @@ class PedidosController extends Controller
         foreach ($toDestroy as $itemToDestroy) {
             $itemToDestroy->delete();
         }
+
+        $pedido = Pedido::find($request->id);
+        $pedido->observaciones = $request->observaciones;
+        $pedido->save();
 
         foreach ($request->productos as $producto) {
             $prod = new PivotPedidoProducto($producto);
@@ -110,6 +115,7 @@ class PedidosController extends Controller
 
         $productosRes = PivotPedidoProducto::todosPorGrupo($id,2);
         $productosCerdo = PivotPedidoProducto::todosPorGrupo($id,1);
+        $productosOtros = PivotPedidoProducto::todosPorGrupo($id,3);
 
         $pedido = Pedido::find($id);
         $pedido->estado = 0;
@@ -117,7 +123,7 @@ class PedidosController extends Controller
 
         $usuario = $pedido->User;
 
-        $data = ['productosRes' => $productosRes,'productosCerdo' => $productosCerdo, 'pedido' => $pedido, 'usuario' => $usuario];
+        $data = ['productosRes' => $productosRes, 'productosOtros' => $productosOtros,'productosCerdo' => $productosCerdo, 'pedido' => $pedido, 'usuario' => $usuario];
         $pdf = PDF::loadView('pdf.pedido', $data);
   
         // return view('certificados.pdf');
@@ -132,8 +138,9 @@ class PedidosController extends Controller
         if ($user->id == $pedido->user_id ){
             $productosRes = PivotPedidoProducto::todosPorGrupo($id,2);
             $productosCerdo = PivotPedidoProducto::todosPorGrupo($id,1);
+            $productosOtros = PivotPedidoProducto::todosPorGrupo($id,3);
             $usuario = $pedido->User;
-            $data = ['productosRes' => $productosRes,'productosCerdo' => $productosCerdo, 'pedido' => $pedido, 'usuario' => $usuario];
+            $data = ['productosRes' => $productosRes, 'productosOtros' => $productosOtros,'productosCerdo' => $productosCerdo, 'pedido' => $pedido, 'usuario' => $usuario];
             $pdf = PDF::loadView('pdf.pedido', $data);
             return $pdf->stream();
         } else {

@@ -129,8 +129,41 @@
 		</table>
 	</div>
 
-	<br>
-	<br>
-	
+	@if (count($productosOtros) > 0 )
+		<div>
+			<h4>Otros</h4>
+			<table class="table table-even table-font">
+				<thead>
+					<tr>
+						<th style="width:25%;"><span class="title-table">Producto</span></th>
+						<th style="width:25%;"><span class="title-table">Unidad</span></th>
+						<th style="width:25%;"><span class="title-table">Cantidad</span></th>
+						<th style="width:25%;"><span class="title-table">Producto Despachado</span></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach ($productosOtros as $producto)
+						<tr>
+							<td>{{ $producto->producto_nombre }}</td>
+							<td>{{ $producto->unidad_nombre	}}</td>
+							<td>{{ $producto->cantidad	}}</td>
+							<td></td>
+						</tr>
+					@endforeach
+
+				</tbody>
+			</table>
+		</div>
+	@endif
+
+	@if (strlen($pedido->observaciones) > 3)
+
+		<div style="text-align:left;">
+			<h4>Observaciones:</h4>
+			<span style="text-align: left; font-size: 10px">{{ $pedido->observaciones }}</span>
+		</div>
+
+	@endif
+
 </body>
 </html>

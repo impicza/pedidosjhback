@@ -9,7 +9,7 @@ class Pedido extends Model
 {
     protected $table = 'pedidos';
 
-    protected $fillable = ['user_id','estado'];
+    protected $fillable = ['user_id','estado','observaciones'];
 
     public function User()
     {
@@ -30,6 +30,7 @@ class Pedido extends Model
     return DB::table('pedidos')
             ->select('pedidos.id as id', 'pedidos.created_at as fecha_creacion','pedidos.estado as estado', 'users.name as cliente')
             ->join('users', 'users.id', '=', 'pedidos.user_id')
+            ->orderBy('id','desc')
             ->get();
     }
 }
